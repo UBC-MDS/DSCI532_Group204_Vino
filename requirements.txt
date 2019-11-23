@@ -1,0 +1,9 @@
+padas
+numpy
+pprint
+googlemaps
+requests
+altair
+vega_datasets
+jupyter
+jupyterlab
