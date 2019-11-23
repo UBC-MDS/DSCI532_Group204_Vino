@@ -10,11 +10,11 @@ To address this issue, we propose building a data visualization app that allows 
 
 ## Section 2: Description of the Data
 
-We will be visualizing a dataset of 50,500 reviews for wines from the United States. The full data set contains 130,000 reviews for wines around the world, and was scraped from Wine Enthusiast on November 22nd, 2017. This data set was not used by any of our group members for DSCI 531, but we recieved approval from TA Kate Sedivy-Haley to proceed with this new dataset for DSCI 532.
+We will be visualizing a dataset of 50,500 reviews for wines from the United States. The full dataset contains 130,000 reviews for wines around the world, was scraped from Wine Enthusiast on November 22nd, 2017 and is referenced from the Wine Reviews Kaggle dataset [here](https://www.kaggle.com/zynicide/wine-reviews). This data set was not used by any of our group members for DSCI 531, but we recieved approval from TA Kate Sedivy-Haley to proceed with this new dataset for DSCI 532.
 
 Each observation has 14 associated variables describing the wine. Our analysis focuses on information about the specific bottle of wine (`variety`, `description`, `title` , `points`, and `price`), and geographic information about the winery that it comes from (`country`, `province`, and `winery`).
 
-Using this data we will also derive two new variables:
+Using this data we will also derive new variables:
 - A `value` score for the wine, calculated as a ratio of `points` (quality or rating) to `price`.
 - A `county` location value for each obersvation, derived from its `winery`, and corresponding id's labelled as `state_id` and `county_id` derived from the [FIPS](https://en.wikipedia.org/wiki/Federal_Information_Processing_Standard_state_code) state and county codes accessed from the [us-atlas](https://github.com/topojson/us-atlas) repository. The county and state mappings will allow us to display data broken down by county and state on a choropleth map.
 
