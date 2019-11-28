@@ -155,7 +155,7 @@ app.layout = html.Div([
             {'label': 'Winery', 'value': 'winery'},
             {'label': 'Grape Variety', 'value': 'variety'},
         ],
-        value='region', # setting default when app loads
+        value='region_1', # setting default when app loads
         style=dict(width='45%',
                 verticalAlign='middle')
         ),
@@ -173,8 +173,8 @@ app.layout = html.Div([
     dcc.RadioItems(
         id='bar-chart-sort',
         options=[
-            {'label': 'Highest to Lowest', 'value': 'asc'},
-            {'label': 'Lowest to Highest', 'value': 'desc'}
+            {'label': 'Lowest to Highest', 'value': 'asc'},
+            {'label': 'Highest to Lowest', 'value': 'desc'}
         ],
         value='asc'
     )
@@ -190,11 +190,11 @@ def update_plot(x_name_update, y_name_update, order):
     Takes the x column name and y column name and calls the 
     sort_extract_bar_plot() function
     """
-    updated_plot = sort_extract_bar_plot(data=data,
+    updated_bar_plot = sort_extract_bar_plot(data=data,
                      y_name=y_name_update,
                      x_name=x_name_update,
                      n=15, direction=order).to_html()
-    return updated_plot
+    return updated_bar_plot
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)
