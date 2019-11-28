@@ -50,7 +50,7 @@ def sort_extract_bar_plot(data=data, y_name='points', x_name='winery', n=15, dir
                     "grid": False,
                     "labelFont": font,
                     "labelFontSize": 12,
-                    "labelAngle": 0, 
+                    "labelAngle": 60, 
                     "tickColor": axisColor,
                     "tickSize": 5, # default, including it just to show you can change it
                     "titleFont": font,
@@ -65,7 +65,7 @@ def sort_extract_bar_plot(data=data, y_name='points', x_name='winery', n=15, dir
                     "gridWidth": 1,
                     "labelFont": font,
                     "labelFontSize": 14,
-                    "labelAngle": 60, 
+                    "labelAngle": 0, 
                     #"ticks": False, # even if you don't have a "domain" you need to turn these off.
                     "titleFont": font,
                     "titleFontSize": 16,
@@ -104,10 +104,10 @@ def sort_extract_bar_plot(data=data, y_name='points', x_name='winery', n=15, dir
                  ),
             color=alt.condition(
                 alt.datum[x_name] == new_data[x_name][0],
-                alt.value('red'),
-                alt.value('grey')
+                alt.value('#512888'),
+                alt.value('#C7DBEA')
             )
-        ).properties(width=700, height=300) 
+        ).properties(width=500, height=300) 
         return ranked_bar
     else:
         # If we want to sort from lowest to highest
@@ -125,8 +125,8 @@ def sort_extract_bar_plot(data=data, y_name='points', x_name='winery', n=15, dir
                  ),
             color=alt.condition(
                 alt.datum[x_name] == new_data[x_name][0],
-                alt.value('red'),
-                alt.value('grey')
+                alt.value('#512888'),
+                alt.value('#C7DBEA')
             )
         ).properties(width=500, height=300) 
         return ranked_bar
@@ -140,7 +140,7 @@ app.layout = html.Div([
     html.Iframe(
         sandbox='allow-scripts',
         id='plot',
-        height='400',
+        height='500',
         width='600',
         style={'border-width': '0'},
 
@@ -151,11 +151,11 @@ app.layout = html.Div([
     dcc.Dropdown(
         id='bar-chart-x',
         options=[
-            {'label': 'Winery', 'value': 'winery'},
             {'label': 'Region', 'value': 'region_1'},
+            {'label': 'Winery', 'value': 'winery'},
             {'label': 'Grape Variety', 'value': 'variety'},
         ],
-        value='winery', # not sure what this is doing,
+        value='region_1', # setting default when app loads
         style=dict(width='45%',
                 verticalAlign='middle')
         ),
@@ -166,24 +166,35 @@ app.layout = html.Div([
             {'label': 'Price', 'value': 'price'},
             {'label': 'Value', 'value': 'value'},
         ],
-        value='points', # may have to change later
+        value='points', 
         style=dict(width='45%',
-                verticalAlign='middle'
+                verticalAlign='middle')
         ),
+    dcc.RadioItems(
+        id='bar-chart-sort',
+        options=[
+            {'label': 'Lowest to Highest', 'value': 'asc'},
+            {'label': 'Highest to Lowest', 'value': 'desc'}
+        ],
+        value='asc'
     )
 ])
 
 @app.callback(
     dash.dependencies.Output('plot', 'srcDoc'),
     [dash.dependencies.Input('bar-chart-x', 'value'),
-    dash.dependencies.Input('bar-chart-y', 'value')])
-def update_plot(x_name, y_name):
+    dash.dependencies.Input('bar-chart-y', 'value'),
+    dash.dependencies.Input('bar-chart-sort', 'value')])
+def update_plot(x_name_update, y_name_update, order):
     """
     Takes the x column name and y column name and calls the 
     sort_extract_bar_plot() function
     """
-    updated_plot = sort_extract_bar_plot(data, y_name, x_name, n=15, direction='desc')
-    return updated_plot
+    updated_bar_plot = sort_extract_bar_plot(data=data,
+                     y_name=y_name_update,
+                     x_name=x_name_update,
+                     n=15, direction=order).to_html()
+    return updated_bar_plot
 
 if __name__ == '__main__':
     app.run_server(debug=True)
