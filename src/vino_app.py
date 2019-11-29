@@ -7,7 +7,10 @@ import pandas as pd
 # from vega_datasets import data
 import states_choropleth
 import state_choropleth
+from varieties_heatmap import plot_heatmap
 from bar_plots import sort_extract_bar_plot
+
+alt.data_transformers.disable_max_rows()
 
 app = dash.Dash(__name__, assets_folder='assets')
 server = app.server
@@ -35,6 +38,7 @@ def plot_choropleth(_type, state_id=6):
         return states_choropleth.plot_map(data)
     elif _type == 'state':
         return state_choropleth.plot_map(data, state_id)
+
 
 app.layout = html.Div([
     dcc.Tabs(
@@ -129,6 +133,28 @@ app.layout = html.Div([
                             ],
                             value='asc'
                         ),
+
+                        html.H3('Heatmap 1'),
+                        html.Iframe(
+                            sandbox='allow-scripts',
+                            id='heatmap_1',
+                            height='550',
+                            width='800',
+                            style={'border-width': '0'},
+
+                            ### Link this Iframe to the heatmap plot
+                            srcDoc=plot_heatmap(data).to_html()
+                        ),
+                        dcc.Dropdown(
+                            id='heatmap_x',
+                            options=[
+                                {'label': 'Rating', 'value': 'points'},
+                                {'label': 'Price', 'value': 'price'},
+                            ],
+                            value='price', 
+                            style=dict(width='45%',
+                                    verticalAlign='middle')
+                        ),
                     ]
                 )
      ]),
@@ -163,6 +189,16 @@ def update_state_call(state_id):
     update_state = plot_choropleth('state', state_id).to_html()
     return update_state
 
+@app.callback(
+    dash.dependencies.Output('heatmap_1', 'srcDoc'),
+    [dash.dependencies.Input('heatmap_x', 'value')])
+def update_heatmap_call(heatmap_x_update):
+    """
+    Takes the x variable from the dropdown list and
+    updates the heatmap according to the user selection.
+    """
+    update_heatmap = plot_heatmap(data, x_name = heatmap_x_update).to_html()
+    return update_heatmap
 
 if __name__ == '__main__':
     app.run_server(debug=True)
