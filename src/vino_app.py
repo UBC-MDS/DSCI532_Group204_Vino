@@ -7,6 +7,9 @@ import pandas as pd
 from vega_datasets import data
 import states_choropleth
 import state_choropleth
+import varieties_heatmap
+
+alt.data_transformers.disable_max_rows()
 
 app = dash.Dash(__name__, assets_folder='assets')
 server = app.server
@@ -153,6 +156,16 @@ def sort_extract_bar_plot(data=data, y_name='points', x_name='winery', n=15, dir
         ).properties(width=500, height=300) 
         return ranked_bar
 
+def plot_heatmap(x_name='price'):
+    """
+    Helper function to call the correct heatmap.
+
+    Parameters:
+    -----------
+    x_name -- (str) name of column to display on x axis of heatmap
+    """
+    return varieties_heatmap.plot_heatmap(data, x_name)
+
 app.layout = html.Div([
 
     html.H1('Main Header'),
@@ -230,6 +243,29 @@ app.layout = html.Div([
         ### Link this Iframe to the dynamic state choropleth
         srcDoc=plot_choropleth('state').to_html()
     ),
+
+    html.H1('Heatmaps'),
+    html.H3('Heatmap 1'),
+    html.Iframe(
+        sandbox='allow-scripts',
+        id='heatmap_1',
+        height='550',
+        width='800',
+        style={'border-width': '0'},
+
+        ### Link this Iframe to the heatmap plot
+        srcDoc=plot_heatmap().to_html()
+    ),
+    dcc.Dropdown(
+        id='heatmap_x',
+        options=[
+            {'label': 'Rating', 'value': 'points'},
+            {'label': 'Price', 'value': 'price'},
+        ],
+        value='price', 
+        style=dict(width='45%',
+                verticalAlign='middle')
+    ),
 ])
 
 @app.callback(
@@ -259,6 +295,16 @@ def update_state_call(state_id):
     update_state = plot_choropleth('state', state_id).to_html()
     return update_state
 
+@app.callback(
+    dash.dependencies.Output('heatmap_1', 'srcDoc'),
+    [dash.dependencies.Input('heatmap_x', 'value')])
+def update_heatmap_call(heatmap_x_update):
+    """
+    Takes the x variable from the dropdown list and
+    updates the heatmap according to the user selection.
+    """
+    update_heatmap = plot_heatmap(x_name = heatmap_x_update).to_html()
+    return update_heatmap
 
 if __name__ == '__main__':
     app.run_server(debug=True)
