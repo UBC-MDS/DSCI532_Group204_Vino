@@ -109,7 +109,9 @@ content = dbc.Container([
                     className='custom-tab',
                     selected_className='custom-tab--selected',
                     children = [
-                        html.H3('Plot 1'),
+                        html.Div([
+                        html.H1('Wine Comparisons'),
+                        html.H3('Wine Rankings'),
                         html.Iframe(
                             sandbox='allow-scripts',
                             id='plot',
@@ -143,17 +145,42 @@ content = dbc.Container([
                             style=dict(width='45%',
                                     verticalAlign='middle')
                             ),
-                        html.H4('Filter by:'),
+                        html.H4('Choose Ranking:'),
                         dcc.RadioItems(
                             id='bar-chart-sort',
                             options=[
-                                {'label': 'Lowest to Highest ', 'value': 'asc'},
-                                {'label': 'Highest to Lowest', 'value': 'desc'}
+                                {'label': ' Lowest to Highest  ', 'value': 'asc'},
+                                {'label': ' Highest to Lowest', 'value': 'desc'}
                             ],
-                            value='asc'
+                            value='asc',
+                            labelStyle={'display': 'block'}
                         ),
+                        html.Div([
+                            html.H4('Number of observations:'),
 
-                        html.H3('Heatmap 1'),
+                            dcc.Slider(
+                                id='bar-chart-slider',
+                                min=1,
+                                max=50,
+                                step=1,
+                                value=15,
+                                marks={
+                                    1: {'label': '1'},
+                                    5: {'label': '5'},
+                                    10: {'label': '10'},
+                                    15: {'label': '15'},
+                                    20: {'label': '20'},
+                                    25: {'label': '25'},
+                                    30: {'label': '30'},
+                                    35: {'label': '35'},
+                                    40: {'label': '40'},
+                                    45: {'label': '45'},
+                                    50: {'label': '50'},
+                                }
+                            ),
+                            ], style={'marginBottom': 50, 'marginTop': 25}),
+
+                        html.H3('Prices vs Ratings'),
                         html.Iframe(
                             sandbox='allow-scripts',
                             id='heatmap_1',
@@ -174,8 +201,9 @@ content = dbc.Container([
                             style=dict(width='45%',
                                     verticalAlign='middle')
                         ),
-                    ]
+                    ], style={'marginBottom': 50, 'marginTop': 25}
                 )
+            ])
             ])
 ])
 
@@ -189,8 +217,9 @@ app.layout = html.Div([jumbotron,
     dash.dependencies.Output('plot', 'srcDoc'),
     [dash.dependencies.Input('bar-chart-x', 'value'),
     dash.dependencies.Input('bar-chart-y', 'value'),
-    dash.dependencies.Input('bar-chart-sort', 'value')])
-def update_plot(x_name_update, y_name_update, order):
+    dash.dependencies.Input('bar-chart-sort', 'value'),
+    dash.dependencies.Input('bar-chart-slider', 'value')])
+def update_plot(x_name_update, y_name_update, order, obs):
     """
     Takes the x column name and y column name and calls the
     sort_extract_bar_plot() function
@@ -198,7 +227,7 @@ def update_plot(x_name_update, y_name_update, order):
     updated_bar_plot = sort_extract_bar_plot(data=data,
                      y_name=y_name_update,
                      x_name=x_name_update,
-                     n=15, direction=order).to_html()
+                     n=obs, direction=order).to_html()
     return updated_bar_plot
 
 @app.callback(
