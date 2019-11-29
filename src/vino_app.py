@@ -9,12 +9,12 @@ import states_choropleth
 import state_choropleth
 from varieties_heatmap import plot_heatmap
 from bar_plots import sort_extract_bar_plot
+import dash_bootstrap_components as dbc
 
 alt.data_transformers.disable_max_rows()
 
-app = dash.Dash(__name__, assets_folder='assets')
+app = dash.Dash(__name__, assets_folder='assets', external_stylesheets=[dbc.themes.LUX])
 server = app.server
-
 
 app.title = "V is for Vino"
 
@@ -39,9 +39,26 @@ def plot_choropleth(_type, state_id=6):
     elif _type == 'state':
         return state_choropleth.plot_map(data, state_id)
 
+jumbotron = dbc.Jumbotron(
+    [
+        dbc.Container(
+            [
+                html.Img(src='https://images.pexels.com/photos/391213/pexels-photo-391213.jpeg?cs=srgb&dl=action-alcohol-art-beverage-391213.jpg&fm=jpg', 
+                      width='100px'),
+                html.H1("V is for Vino", className="display-3"),
+                html.P(
+                    "Explore the best wines the states has to offer using our interactive dashboard",
+                    className="lead",
+                ),
+            ],
+            fluid=True,
+        )
+    ],
+    fluid=True,
+)
 
-app.layout = html.Div([
-    dcc.Tabs(
+content = dbc.Container([
+        dcc.Tabs(
             id="tabs-with-classes",
             value='tab-2',
             parent_className='custom-tabs',
@@ -130,7 +147,7 @@ app.layout = html.Div([
                         dcc.RadioItems(
                             id='bar-chart-sort',
                             options=[
-                                {'label': 'Lowest to Highest', 'value': 'asc'},
+                                {'label': 'Lowest to Highest ', 'value': 'asc'},
                                 {'label': 'Highest to Lowest', 'value': 'desc'}
                             ],
                             value='asc'
@@ -159,7 +176,11 @@ app.layout = html.Div([
                         ),
                     ]
                 )
-     ]),
+            ])
+])
+
+app.layout = html.Div([jumbotron, 
+                       content,
         html.Div(id='tabs-content-classes')
 ])
 
