@@ -102,7 +102,7 @@ app.layout = html.Div([
                             ### Link this Iframe to the dynamic bar plot
                             srcDoc=sort_extract_bar_plot(data).to_html()
                         ),
-                        html.H3('Choose the x axis of the bar plot'),
+                        html.H4('Choose x axis:'),
                         dcc.Dropdown(
                             id='bar-chart-x',
                             options=[
@@ -114,6 +114,7 @@ app.layout = html.Div([
                             style=dict(width='45%',
                                     verticalAlign='middle')
                             ),
+                        html.H4('Choose y axis:'),
                         dcc.Dropdown(
                             id='bar-chart-y',
                             options=[
@@ -125,6 +126,7 @@ app.layout = html.Div([
                             style=dict(width='45%',
                                     verticalAlign='middle')
                             ),
+                        html.H4('Filter by:'),
                         dcc.RadioItems(
                             id='bar-chart-sort',
                             options=[
