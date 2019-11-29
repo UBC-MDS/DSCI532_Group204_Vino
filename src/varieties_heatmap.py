@@ -40,32 +40,40 @@ def plot_heatmap(df, x_name='price'):
     if x_name == 'price': 
         varieties_heatmap_plot = alt.Chart(varieties_chart_data.query('price < 50')).mark_rect().encode(
             x=alt.X(x_name + ':Q',
-                        bin=alt.Bin(maxbins=10),
-                        title="Price"),
-                y=alt.Y('variety:O', 
-                        title="Grape Variety"),
-                color=alt.Color('average(value_scaled):Q',
-                                scale=alt.Scale(scheme="bluepurple"),
-                legend=alt.Legend(
-                                orient='right', title="Average Value")
-                            ),
-                tooltip=['average(points)','average(price)','average(value_scaled)', 'count(title)']
-            ).properties(title="Average Value for Grape Varieties by Price").configure_axis(grid=False)
+                    bin=alt.Bin(maxbins=10),
+                    title="Price"),
+            y=alt.Y('variety:O', 
+                    title="Grape Variety"),
+            color=alt.Color('average(value_scaled):Q',
+                            scale=alt.Scale(scheme="bluepurple"),
+            legend=alt.Legend(
+                            orient='right', title="Average Value")
+                        ),
+            tooltip=['average(points)','average(price)','average(value_scaled)', 'count(title)']
+        ).properties(
+            title="Average Value for Grape Varieties by Price"
+        ).configure_axis(
+            grid=False
+        )
     
     if x_name == 'points':
         varieties_heatmap_plot = alt.Chart(varieties_chart_data).mark_rect().encode(
-                    x=alt.X('points:Q',
-                              bin=alt.Bin(maxbins=10),
-                              title="Rating"),
-                     y=alt.Y('variety:O', 
-                             title="Grape Variety"),
-                     color=alt.Color('average(value_scaled):Q',
-                                     scale=alt.Scale(scheme="bluepurple"),
-                     legend=alt.Legend(
-                                     orient='right', title="Average Value")
-                                    ),
-                     tooltip=['average(points)','average(price)','average(value_scaled)', 'count(title)']
-            ).properties(title="Average Value for Grape Varieties by Rating")
+            x=alt.X('points:Q',
+                        bin=alt.Bin(maxbins=10),
+                        title="Rating"),
+            y=alt.Y('variety:O', 
+                    title="Grape Variety"),
+            color=alt.Color('average(value_scaled):Q',
+                            scale=alt.Scale(scheme="bluepurple"),
+            legend=alt.Legend(
+                            orient='right', title="Average Value")
+                        ),
+            tooltip=['average(points)','average(price)','average(value_scaled)', 'count(title)']
+        ).properties(
+            title="Average Value for Grape Varieties by Price"
+        ).configure_axis(
+            grid=False
+        )
     
     return varieties_heatmap_plot
 
