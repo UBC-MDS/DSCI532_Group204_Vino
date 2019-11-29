@@ -36,7 +36,6 @@ def plot_choropleth(_type, state_id=6):
     elif _type == 'state':
         return state_choropleth.plot_map(data, state_id)
 
-
 app.layout = html.Div([
     dcc.Tabs(
             id="tabs-with-classes",
