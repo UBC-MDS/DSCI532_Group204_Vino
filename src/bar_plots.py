@@ -1,6 +1,14 @@
 import altair as alt
 import pandas as pd
 
+x_labels = {'region_1': 'Region',
+            'winery': 'Winery',
+            'variety': 'Grape Variety'}
+
+y_labels = {'points': 'Rating',
+            'price': 'Price',
+            'value_scaled': 'Value'}
+
 def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, direction='desc'):
     """
     Sorts dataframe by column of interest and returns data to
@@ -79,14 +87,14 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
     # If we want to sort from highest to lowest:
     if direction == 'desc': 
         new_data = new_data.sort_values(by=y_name, ascending=False).head(n).reset_index()
-        ranked_bar = alt.Chart(new_data).mark_bar(color='grey').encode(
+        ranked_bar = alt.Chart(new_data).mark_bar().encode(
             alt.X(x_name +':N',
                       sort=alt.EncodingSortField(
                       field=y_name,  
                       op="sum",  
-                      order='descending'  
+                      order='descending',  
                   )),
-            alt.Y(y_name + ':Q', 
+            alt.Y(y_name + ':Q', title=y_labels[y_name],
                   scale=alt.Scale(domain=[min(new_data[y_name]),
                      max(new_data[y_name])])
                  ),
@@ -95,19 +103,19 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                 alt.value('#512888'),
                 alt.value('#C7DBEA')
             )
-        ).properties(width=500, height=300) 
+        ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
         return ranked_bar
     else:
         # If we want to sort from lowest to highest
         new_data = new_data.sort_values(by=y_name, ascending=True).head(n).reset_index()
-        ranked_bar = alt.Chart(new_data).mark_bar(color='grey').encode(
+        ranked_bar = alt.Chart(new_data).mark_bar().encode(
             alt.X(x_name +':N',
                       sort=alt.EncodingSortField(
                       field=y_name,  
                       op="sum",  
                       order='ascending'  
                   )),
-            alt.Y(y_name + ':Q', 
+            alt.Y(y_name + ':Q', title=y_labels[y_name], 
                   scale=alt.Scale(domain=[min(new_data[y_name])-1,
                              max(new_data[y_name])])
                  ),
@@ -116,5 +124,5 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                 alt.value('#512888'),
                 alt.value('#C7DBEA')
             )
-        ).properties(width=500, height=300) 
+        ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
         return ranked_bar
