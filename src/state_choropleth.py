@@ -75,9 +75,11 @@ def plot_map(df, state_id=6):
         ).encode(
             color=alt.Color('Num Reviews:Q',
                             scale=colormap),
-            tooltip=['County:O', 'County ID:O',
-                     'Ave Points:Q', 'Ave Price:Q',
-                     'Ave Value:Q', 'Num Reviews:Q']
+            tooltip=[alt.Tooltip('County:O'), 
+                     alt.Tooltip('Ave Points:Q', format='.2f'),
+                     alt.Tooltip('Ave Price:Q', format='$.2f'),
+                     alt.Tooltip('Ave Value:Q', format='.2f'),
+                     alt.Tooltip('Num Reviews:Q')]
         )
         .transform_calculate(state_id="(datum.id / 1000)|0")
         .transform_filter((alt.datum.state_id) == state_id)

@@ -50,9 +50,11 @@ def plot_map(df):
     foreground = alt.Chart(states).mark_geoshape().encode(
         color=alt.Color('Num Reviews:Q',
                         scale=colormap),
-        tooltip=['State:O', 'State ID:O', 
-                 'Ave Points:Q','Ave Price:Q',
-                 'Ave Value:Q','Num Reviews:Q']
+        tooltip=[alt.Tooltip('State:O'),
+                 alt.Tooltip('Ave Points:Q', format='.2f'),
+                 alt.Tooltip('Ave Price:Q', format='$.2f'),
+                 alt.Tooltip('Ave Value:Q', format='.2f'),
+                 alt.Tooltip('Num Reviews:Q')]
     ).mark_geoshape(
         stroke='black',
         strokeWidth=0.5
