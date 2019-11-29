@@ -104,19 +104,22 @@ content = dbc.Container([
                     ])]
                 ),
                 dcc.Tab(
-                    label='Tab two',
+                    label='Explore Rating, Price & Value of Wines',
                     value='tab-2',
                     className='custom-tab',
                     selected_className='custom-tab--selected',
                     children = [
                         html.Div([
-                        html.H1('Wine Comparisons'),
-                        html.H3('Wine Rankings'),
+                        html.H1('Comparing Wines'),
+                        html.P('These interactive graphs allow you to explore the price, rating and value for different \
+                                wineries, grape varieties, and regions. The bar chart shows dynamically ranked \
+                                results for calculated averages, while the heat map shows the distribution \
+                                of value (scaled rating / dollar) for popular grape varieties.'),
                         html.Iframe(
                             sandbox='allow-scripts',
                             id='plot',
-                            height='500',
-                            width='600',
+                            height='540',
+                            width='800',
                             style={'border-width': '0'},
                             ### Link this Iframe to the dynamic bar plot
                             srcDoc=sort_extract_bar_plot(data).to_html()
@@ -178,19 +181,20 @@ content = dbc.Container([
                                     50: {'label': '50'},
                                 }
                             ),
-                            ], style={'marginBottom': 50, 'marginTop': 25}),
+                            ], style={'marginBottom': 100, 'marginTop': 25}),
 
-                        html.H3('Prices vs Ratings'),
+
                         html.Iframe(
                             sandbox='allow-scripts',
                             id='heatmap_1',
-                            height='550',
-                            width='800',
+                            height='500',
+                            width='900',
                             style={'border-width': '0'},
 
                             ### Link this Iframe to the heatmap plot
                             srcDoc=plot_heatmap(data).to_html()
                         ),
+                        html.H4('Choose x axis:'),
                         dcc.Dropdown(
                             id='heatmap_x',
                             options=[
