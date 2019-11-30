@@ -124,5 +124,5 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                 alt.value('#512888'),
                 alt.value('lightgrey')
             )
-        ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
+        ).properties(width=570, height=350, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
         return ranked_bar

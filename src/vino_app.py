@@ -41,17 +41,17 @@ def plot_choropleth(_type, state_id=6):
 
 jumbotron = dbc.Jumbotron(
     [
-        dbc.Container(
+        dbc.Col(
             [
-                html.Img(src='https://images.pexels.com/photos/391213/pexels-photo-391213.jpeg?cs=srgb&dl=action-alcohol-art-beverage-391213.jpg&fm=jpg', 
-                      width='100px'),
+                # html.Img(src='https://images.pexels.com/photos/391213/pexels-photo-391213.jpeg?cs=srgb&dl=action-alcohol-art-beverage-391213.jpg&fm=jpg', 
+                #       width='100px'),
                 html.H1("V is for Vino", className="display-3"),
                 html.P(
                     "Explore the best wines the states has to offer using our interactive dashboard",
                     className="lead",
                 ),
             ],
-            fluid=True,
+            width={"offset":3},
         )
     ],
     fluid=True,
@@ -72,10 +72,16 @@ content = dbc.Container([
                     children=[
                             html.Div([
                                 dbc.Row([
+                                    dbc.Col(html.Br())
+                                ]),
+                                dbc.Row([
+                                    dbc.Col(html.Br())
+                                ]),
+                                dbc.Row([
                                     dbc.Col(html.H1('Wine Reviews by Geographic Location'))
                                 ]),
                                 dbc.Row([
-                                    dbc.Col(html.H3('Total Number of Reviews'))
+                                    dbc.Col(html.Br())
                                 ]),
                                 dbc.Row([
                                     dbc.Col(html.P("See how wine is distributed across the U.S. \
@@ -87,12 +93,25 @@ content = dbc.Container([
                                           find the best wine's at the best prices in America."))
                                 ]),
                                 dbc.Row([
+                                    dbc.Col(html.Br())
+                                ]),
+                                dbc.Row([
+                                    dbc.Col(html.H3('Total Number of Reviews'))
+                                ]),
+                                dbc.Row([
+                                    dbc.Col(html.Hr())
+                                ]),
+                                dbc.Row([
+                                    dbc.Col(html.H5('Choose a State'))
+                                ]),
+                                dbc.Row([
                                     dcc.Dropdown(
                                         id='state_id',
                                         options=STATES,
                                         value=6, 
                                         style=dict(width='45%',
-                                                verticalAlign='center')
+                                                   verticalAlign='middle',
+                                                   left=15)
                                     )
                                 ]),
                                 dbc.Row([
@@ -114,107 +133,165 @@ content = dbc.Container([
                             ])]
                 ),
                 dcc.Tab(
-                    label='Tab two',
+                    label='Feature Analysis',
                     value='tab-2',
                     className='custom-tab',
                     selected_className='custom-tab--selected',
                     children = [
-                        html.Div([
-                        html.H1('Wine Comparisons'),
-                        html.H3('Wine Rankings'),
-                        html.Iframe(
-                            sandbox='allow-scripts',
-                            id='plot',
-                            height='500',
-                            width='600',
-                            style={'border-width': '0'},
-                            ### Link this Iframe to the dynamic bar plot
-                            srcDoc=sort_extract_bar_plot(data).to_html()
-                        ),
-                        html.H4('Choose x axis:'),
-                        dcc.Dropdown(
-                            id='bar-chart-x',
-                            options=[
-                                {'label': 'Region', 'value': 'region_1'},
-                                {'label': 'Winery', 'value': 'winery'},
-                                {'label': 'Grape Variety', 'value': 'variety'},
+                        dbc.Row([
+                                dbc.Col(html.Br())
+                            ]),
+                         dbc.Row([
+                                dbc.Col(html.Br())
+                            ]),
+                        dbc.Row([
+                                dbc.Col(html.H1('Wine Feature Comparisons'))
+                            ]),
+                        dbc.Row([
+                                dbc.Col(html.Br())
+                            ]),
+                        dbc.Row([
+                                dbc.Col(html.P("THIS NEEDS TO BE WRITTEN STILL. \
+                                      Here is just some filler text we can do what we want here. \
+                                      La la la la blah blah blah I am writing filler text. \
+                                      I can't think of anything special to say so I'll just say what a team effort! \
+                                      I THINK IT WILL BE IMPORTANT TO DESCRIBE WHAT FEATURES YOU CAN FILTER ON, \
+                                      AND WHAT THEY ALL MEAN (FOR EXAMPLE, VALUE, REGION (HOW IT DIFFERS FROM STATE), ETC."))
+                            ]),
+                        dbc.Row([
+                                dbc.Col(html.Br())
+                            ]),
+                        dbc.Row([
+                                dbc.Col(html.H3('Wine Rankings'))
+                            ]),
+                        dbc.Row([
+                                    dbc.Col(html.Hr())
+                            ]),
+                        dbc.Row([
+                                dbc.Col(html.H5('Choose X Axis:')),
+                                dbc.Col(html.H5('Choose Y Axis:')),
+                                dbc.Col(html.H5('Choose Ranking:')),
+                            ]),
+                        dbc.Row([
+                                dbc.Col(
+                                    dcc.Dropdown(
+                                        id='bar-chart-x',
+                                        options=[
+                                            {'label': 'Region', 'value': 'region_1'},
+                                            {'label': 'Winery', 'value': 'winery'},
+                                            {'label': 'Grape Variety', 'value': 'variety'},
+                                        ],
+                                        value='region_1', # setting default when app loads
+                                        style=dict(width='80%',
+                                                verticalAlign='middle')
+                                        )),
+                                dbc.Col(
+                                    dcc.Dropdown(
+                                        id='bar-chart-y',
+                                        options=[
+                                            {'label': 'Rating', 'value': 'points'},
+                                            {'label': 'Price', 'value': 'price'},
+                                            {'label': 'Value', 'value': 'value_scaled'},
+                                        ],
+                                        value='points',
+                                        style=dict(width='80%',
+                                                verticalAlign='middle')
+                                        )),
+                                dbc.Col(
+                                    dcc.RadioItems(
+                                        id='bar-chart-sort',
+                                        options=[
+                                            {'label': ' Lowest to Highest  ', 'value': 'asc'},
+                                            {'label': ' Highest to Lowest', 'value': 'desc'}
+                                        ],
+                                        value='asc',
+                                        labelStyle={'display': 'block'}
+                                        )),
+                            ]),
+                        dbc.Row([
+                                dbc.Col(html.H5('Number of observations:'))
+                            ]),
+                        dbc.Row([
+                            dbc.Col([
+                                dcc.Slider(
+                                    id='bar-chart-slider',
+                                    min=1,
+                                    max=50,
+                                    step=1,
+                                    value=15,
+                                    marks={
+                                        1: {'label': '1'},
+                                        5: {'label': '5'},
+                                        10: {'label': '10'},
+                                        15: {'label': '15'},
+                                        20: {'label': '20'},
+                                        25: {'label': '25'},
+                                        30: {'label': '30'},
+                                        35: {'label': '35'},
+                                        40: {'label': '40'},
+                                        45: {'label': '45'},
+                                        50: {'label': '50'},
+                                    }
+                                ),
                             ],
-                            value='region_1', # setting default when app loads
-                            style=dict(width='45%',
-                                    verticalAlign='middle')
-                            ),
-                        html.H4('Choose y axis:'),
-                        dcc.Dropdown(
-                            id='bar-chart-y',
-                            options=[
-                                {'label': 'Rating', 'value': 'points'},
-                                {'label': 'Price', 'value': 'price'},
-                                {'label': 'Value', 'value': 'value_scaled'},
-                            ],
-                            value='points',
-                            style=dict(width='45%',
-                                    verticalAlign='middle')
-                            ),
-                        html.H4('Choose Ranking:'),
-                        dcc.RadioItems(
-                            id='bar-chart-sort',
-                            options=[
-                                {'label': ' Lowest to Highest  ', 'value': 'asc'},
-                                {'label': ' Highest to Lowest', 'value': 'desc'}
-                            ],
-                            value='asc',
-                            labelStyle={'display': 'block'}
-                        ),
-                        html.Div([
-                            html.H4('Number of observations:'),
-
-                            dcc.Slider(
-                                id='bar-chart-slider',
-                                min=1,
-                                max=50,
-                                step=1,
-                                value=15,
-                                marks={
-                                    1: {'label': '1'},
-                                    5: {'label': '5'},
-                                    10: {'label': '10'},
-                                    15: {'label': '15'},
-                                    20: {'label': '20'},
-                                    25: {'label': '25'},
-                                    30: {'label': '30'},
-                                    35: {'label': '35'},
-                                    40: {'label': '40'},
-                                    45: {'label': '45'},
-                                    50: {'label': '50'},
-                                }
-                            ),
-                            ], style={'marginBottom': 50, 'marginTop': 25}),
-
-                        html.H3('Prices vs Ratings'),
-                        html.Iframe(
-                            sandbox='allow-scripts',
-                            id='heatmap_1',
-                            height='550',
-                            width='800',
-                            style={'border-width': '0'},
-
-                            ### Link this Iframe to the heatmap plot
-                            srcDoc=plot_heatmap(data).to_html()
-                        ),
-                        dcc.Dropdown(
-                            id='heatmap_x',
-                            options=[
-                                {'label': 'Rating', 'value': 'points'},
-                                {'label': 'Price', 'value': 'price'},
-                            ],
-                            value='price', 
-                            style=dict(width='45%',
-                                    verticalAlign='middle')
-                        ),
-                    ], style={'marginBottom': 50, 'marginTop': 25}
-                )
+                            style={'marginBottom': 50, 'marginTop': 25}),
+                        ]),
+                        dbc.Row([
+                            dbc.Col([
+                                html.Iframe(
+                                    sandbox='allow-scripts',
+                                    id='plot',
+                                    height=600,
+                                    width=800,
+                                    style={'border-width': '0'},
+                                    ### Link this Iframe to the dynamic bar plot
+                                    srcDoc=sort_extract_bar_plot(data).to_html()
+                                )
+                            ])
+                        ]),
+                        dbc.Row([
+                            dbc.Col(html.Br())
+                        ]),
+                        dbc.Row([
+                            dbc.Col(html.H3('Price and Rating Analysis'))
+                        ]),
+                        dbc.Row([
+                            dbc.Col(html.Hr())
+                        ]),
+                        dbc.Row([
+                            dbc.Col(html.H5('Analyze by Price or Rating'))
+                        ]),
+                        dbc.Row([
+                            dbc.Col([
+                                dcc.Dropdown(
+                                    id='heatmap_x',
+                                    options=[
+                                        {'label': 'Rating', 'value': 'points'},
+                                        {'label': 'Price', 'value': 'price'},
+                                    ],
+                                    value='price', 
+                                    style=dict(width='45%',
+                                            verticalAlign='middle')
+                                )
+                            ])
+                        ]),
+                        dbc.Row([
+                            dbc.Col(html.Br())
+                        ]),
+                        dbc.Row([
+                            dbc.Col([
+                                html.Iframe(
+                                    sandbox='allow-scripts',
+                                    id='heatmap_1',
+                                    height=600,
+                                    width=850,
+                                    style={'border-width': '0'},
+                                    srcDoc=plot_heatmap(data).to_html()
+                                )
+                            ])
+                        ])
             ])
-            ])
+        ])
 ])
 
 app.layout = html.Div([jumbotron, 
