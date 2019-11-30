@@ -102,7 +102,9 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                 alt.datum[x_name] == new_data[x_name][0],
                 alt.value('#512888'),
                 alt.value('lightgrey')
-            )
+            ),
+            tooltip=[alt.Tooltip(f'{x_name}:N'),
+                    alt.Tooltip(f'{y_name}:Q')]
         ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
         return ranked_bar
     else:
@@ -123,6 +125,7 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                 alt.datum[x_name] == new_data[x_name][0],
                 alt.value('#512888'),
                 alt.value('lightgrey')
-            )
+            ),
+            tooltip=[x_name + ':N', y_name + ':Q']
         ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
         return ranked_bar

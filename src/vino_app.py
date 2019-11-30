@@ -60,12 +60,12 @@ jumbotron = dbc.Jumbotron(
 content = dbc.Container([
         dcc.Tabs(
             id="tabs-with-classes",
-            value='tab-2',
+            value='tab-1',
             parent_className='custom-tabs',
             className='custom-tabs-container',
             children=[
                 dcc.Tab(
-                    label='Tab one',
+                    label='WINE MAPS',
                     value='tab-1',
                     className='custom-tab',
                     selected_className='custom-tab--selected',
@@ -104,7 +104,7 @@ content = dbc.Container([
                     ])]
                 ),
                 dcc.Tab(
-                    label='Tab two',
+                    label='WINE COMPARISONS',
                     value='tab-2',
                     className='custom-tab',
                     selected_className='custom-tab--selected',
