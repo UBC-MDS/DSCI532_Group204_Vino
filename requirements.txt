@@ -1,4 +1,4 @@
-padas
+pandas
 numpy
 pprint
 googlemaps
@@ -7,3 +7,7 @@ altair
 vega_datasets
 jupyter
 jupyterlab
+dash
+dash_core_components
+dash_html_components
+dash_bootstrap_components
