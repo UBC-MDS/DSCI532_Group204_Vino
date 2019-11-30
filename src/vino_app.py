@@ -133,7 +133,7 @@ content = dbc.Container([
                             ])]
                 ),
                 dcc.Tab(
-                    label='Feature Analysis',
+                    label='Explore Rating, Price & Value of Wines',
                     value='tab-2',
                     className='custom-tab',
                     selected_className='custom-tab--selected',
