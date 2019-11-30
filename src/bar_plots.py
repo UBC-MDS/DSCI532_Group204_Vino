@@ -23,7 +23,7 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                        order based on the by column (default='desc')
     """
     def vino_special():
-        font = "Candara"
+        font = "Helvetica"
         axisColor = "#000000"
         gridColor = "#DEDDDD"
         return {
@@ -36,7 +36,7 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                 },
                 'view': {
                     "height": 300, 
-                    "width": 400
+                    "width": 500
                 },
                 "axisX": {
                     "domain": True,
@@ -101,7 +101,7 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
             color=alt.condition(
                 alt.datum[x_name] == new_data[x_name][0],
                 alt.value('#512888'),
-                alt.value('#C7DBEA')
+                alt.value('lightgrey')
             )
         ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
         return ranked_bar
@@ -122,7 +122,7 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
             color=alt.condition(
                 alt.datum[x_name] == new_data[x_name][0],
                 alt.value('#512888'),
-                alt.value('#C7DBEA')
+                alt.value('lightgrey')
             )
         ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
         return ranked_bar
