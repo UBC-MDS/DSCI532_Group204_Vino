@@ -69,6 +69,7 @@ content = dbc.Container([
             is essentially a ratio of its rating to price. Each review also contains details \
             such as grape variety, winery, region, county, and state."
         ),
+        html.Br(),
         dcc.Tabs(
             id="tabs-with-classes",
             value='tab-1',
