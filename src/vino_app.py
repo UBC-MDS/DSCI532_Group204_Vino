@@ -53,12 +53,22 @@ jumbotron = dbc.Jumbotron(
                     "Explore the best wines the United States has to offer using our interactive dashboard",
                     className="lead",
                 ),
+
             ],
             style={"text-align": 'center'})],
     fluid=True,
 )
 
 content = dbc.Container([
+        html.P(
+            "This app allows you visualize details of over 50,000 wine reviews from across \
+            the United States, using data scraped from Wine Enthusiast on November 22nd, \
+            2017. Given the data source, the wines tend to be of relatively high quality, \
+            with each receiving a rating score between 80 and 100. \
+            We’ve used these ratings to assign a ‘value’ score to each wine, which \
+            is essentially a ratio of its rating to price. Each review also contains details \
+            such as grape variety, winery, region, county, and state."
+        ),
         dcc.Tabs(
             id="tabs-with-classes",
             value='tab-1',
