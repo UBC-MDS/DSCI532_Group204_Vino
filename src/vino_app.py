@@ -232,7 +232,7 @@ content = dbc.Container([
                                     }
                                 ),
                             ],
-                            style={'marginBottom': 50, 'marginTop': 25}),
+                            style={'marginBottom': 50, 'marginTop': 10}),
                         ]),
                         dbc.Row([
                             dbc.Col([
