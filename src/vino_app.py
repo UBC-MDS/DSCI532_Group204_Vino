@@ -51,8 +51,8 @@ jumbotron = dbc.Jumbotron(
                     className="lead",
                 ),
             ],
-            width={"offset":3},
-        )
+            style={'text-align': 'center'}
+        ),
     ],
     fluid=True,
 )
@@ -151,12 +151,10 @@ content = dbc.Container([
                                 dbc.Col(html.Br())
                             ]),
                         dbc.Row([
-                                dbc.Col(html.P("THIS NEEDS TO BE WRITTEN STILL. \
-                                      Here is just some filler text we can do what we want here. \
-                                      La la la la blah blah blah I am writing filler text. \
-                                      I can't think of anything special to say so I'll just say what a team effort! \
-                                      I THINK IT WILL BE IMPORTANT TO DESCRIBE WHAT FEATURES YOU CAN FILTER ON, \
-                                      AND WHAT THEY ALL MEAN (FOR EXAMPLE, VALUE, REGION (HOW IT DIFFERS FROM STATE), ETC."))
+                                dbc.Col(html.P('These interactive graphs allow you to explore the price, rating and value for different \
+                                wineries, grape varieties, and regions. The bar chart shows dynamically ranked \
+                                results for calculated averages, while the heat map shows the distribution \
+                                of value (scaled rating / dollar) for popular grape varieties.'))
                             ]),
                         dbc.Row([
                                 dbc.Col(html.Br())
@@ -234,7 +232,7 @@ content = dbc.Container([
                                     }
                                 ),
                             ],
-                            style={'marginBottom': 50, 'marginTop': 25}),
+                            style={'marginBottom': 50, 'marginTop': 10}),
                         ]),
                         dbc.Row([
                             dbc.Col([
