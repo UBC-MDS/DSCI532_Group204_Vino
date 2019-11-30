@@ -60,48 +60,58 @@ jumbotron = dbc.Jumbotron(
 content = dbc.Container([
         dcc.Tabs(
             id="tabs-with-classes",
-            value='tab-2',
+            value='tab-1',
             parent_className='custom-tabs',
             className='custom-tabs-container',
             children=[
                 dcc.Tab(
-                    label='Tab one',
+                    label='Geographic Analysis',
                     value='tab-1',
                     className='custom-tab',
                     selected_className='custom-tab--selected',
                     children=[
-                        html.Div([
-                            html.H1('Choropleth Maps'),
-                            html.H3('States Choropleth'),
-                            html.Iframe(
-                                sandbox='allow-scripts',
-                                id='states_choropleth',
-                                height='550',
-                                width='800',
-                                style={'border-width': '0'},
-
-                                ### Link this Iframe to the states choropleth
-                                srcDoc=plot_choropleth('states').to_html()
-                            ),
-                            dcc.Dropdown(
-                                id='state_id',
-                                options=STATES,
-                                value=6, 
-                                style=dict(width='45%',
-                                        verticalAlign='middle')
-                            ),
-                            html.H3('State Choropleth'),
-                            html.Iframe(
-                                sandbox='allow-scripts',
-                                id='state_choropleth',
-                                height='580',
-                                width='800',
-                                style={'border-width': '0'},
-
-                                ### Link this Iframe to the dynamic state choropleth
-                                srcDoc=plot_choropleth('state').to_html()
-                            ),
-                    ])]
+                            html.Div([
+                                dbc.Row([
+                                    dbc.Col(html.H1('Wine Reviews by Geographic Location'))
+                                ]),
+                                dbc.Row([
+                                    dbc.Col(html.H3('Total Number of Reviews'))
+                                ]),
+                                dbc.Row([
+                                    dbc.Col(html.P("See how wine is distributed across the U.S. \
+                                          Hover over a particular state or county to see some summary \
+                                          information for things like average price, points, or value rating. \
+                                          Use the dropdown menu to take a closer look at a particular state, \
+                                          where you can see a breakdown by county. Hover over a county to get more \
+                                          summary information. In no time at all you'll be an expert on where you can \
+                                          find the best wine's at the best prices in America."))
+                                ]),
+                                dbc.Row([
+                                    dcc.Dropdown(
+                                        id='state_id',
+                                        options=STATES,
+                                        value=6, 
+                                        style=dict(width='45%',
+                                                verticalAlign='center')
+                                    )
+                                ]),
+                                dbc.Row([
+                                    html.Iframe(
+                                        sandbox='allow-scripts',
+                                        id='state_choropleth',
+                                        height=500,
+                                        width=420,
+                                        style={'border-width': '0'},
+                                        srcDoc=plot_choropleth('state').to_html()),
+                                    html.Iframe(
+                                        sandbox='allow-scripts',
+                                        id='states_choropleth',
+                                        height=500,
+                                        width=720,
+                                        style={'border-width': '0'},
+                                        srcDoc=plot_choropleth('states').to_html())
+                                ]),
+                            ])]
                 ),
                 dcc.Tab(
                     label='Tab two',
