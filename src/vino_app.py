@@ -13,7 +13,10 @@ import dash_bootstrap_components as dbc
 
 alt.data_transformers.disable_max_rows()
 
-app = dash.Dash(__name__, assets_folder='assets', external_stylesheets=[dbc.themes.LUX])
+app = dash.Dash(__name__, assets_folder='assets', external_stylesheets=[dbc.themes.LUX,
+                                                                        'jumbotron.css'])
+
+# app = dash.Dash(__name__)
 server = app.server
 
 app.title = "V is for Vino"
@@ -47,7 +50,7 @@ jumbotron = dbc.Jumbotron(
                 #       width='100px'),
                 html.H1("V is for Vino", className="display-3"),
                 html.P(
-                    "Explore the best wines the states has to offer using our interactive dashboard",
+                    "Explore the best wines the United States has to offer using our interactive dashboard",
                     className="lead",
                 ),
                 html.P(
@@ -60,9 +63,7 @@ jumbotron = dbc.Jumbotron(
                     such as grape variety, winery, region, county, and state."
                 ),
             ],
-            style={'text-align': 'center'}
-        ),
-    ],
+            style={"text-align": 'center'})],
     fluid=True,
 )
 
@@ -79,7 +80,6 @@ content = dbc.Container([
                     className='custom-tab',
                     selected_className='custom-tab--selected',
                     children=[
-                            html.Div([
                                 dbc.Row([
                                     dbc.Col(html.Br())
                                 ]),
@@ -107,9 +107,12 @@ content = dbc.Container([
                                 dbc.Row([
                                     dbc.Col(html.H3('Total Number of Reviews'))
                                 ]),
-                                dbc.Row([
-                                    dbc.Col(html.Hr())
-                                ]),
+                                dbc.Row(
+                                    dbc.Col(html.Hr(hidden=False,
+                                                    style={'height':1,
+                                                           'background-color': '#50107a',
+                                                           'margin-top': 0}))
+                                ),
                                 dbc.Row([
                                     dbc.Col(html.H5('Choose a State'))
                                 ]),
@@ -139,7 +142,7 @@ content = dbc.Container([
                                         style={'border-width': '0'},
                                         srcDoc=plot_choropleth('states').to_html())
                                 ]),
-                            ])]
+                            ]
                 ),
                 dcc.Tab(
                     label='Explore Rating, Price & Value of Wines',
@@ -171,9 +174,12 @@ content = dbc.Container([
                         dbc.Row([
                                 dbc.Col(html.H3('Wine Rankings'))
                             ]),
-                        dbc.Row([
-                                    dbc.Col(html.Hr())
-                            ]),
+                        dbc.Row(
+                            dbc.Col(html.Hr(hidden=False,
+                                            style={'height':1,
+                                                   'background-color': '#50107a',
+                                                   'margin-top': 0}))
+                        ),
                         dbc.Row([
                                 dbc.Col(html.H5('Choose X Axis:')),
                                 dbc.Col(html.H5('Choose Y Axis:')),
@@ -262,9 +268,12 @@ content = dbc.Container([
                         dbc.Row([
                             dbc.Col(html.H3('Price and Rating Analysis'))
                         ]),
-                        dbc.Row([
-                            dbc.Col(html.Hr())
-                        ]),
+                        dbc.Row(
+                            dbc.Col(html.Hr(hidden=False,
+                                            style={'height':1,
+                                                   'background-color': '#50107a',
+                                                   'margin-top': 0}))
+                        ),
                         dbc.Row([
                             dbc.Col(html.H5('Analyze by Price or Rating'))
                         ]),
@@ -303,8 +312,7 @@ content = dbc.Container([
 
 app.layout = html.Div([jumbotron, 
                        content,
-        html.Div(id='tabs-content-classes')
-])
+                       html.Div(id='tabs-content-classes')])
 
 
 @app.callback(
