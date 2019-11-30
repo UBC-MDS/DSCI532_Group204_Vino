@@ -3,6 +3,73 @@ import pandas as pd
 from vega_datasets import data
 import sys
 
+
+
+def vino_special():
+    font = "Helvetica"
+    axisColor = "#000000"
+    gridColor = "#DEDDDD"
+    return {
+        "config": {
+            "title": {
+                "fontSize": 24,
+                "font": font,
+                "anchor": "start", # equivalent of left-aligned.
+                "fontColor": "#000000"
+            },
+            'view': {
+                "height": 300, 
+                "width": 400
+            },
+            "axisX": {
+                "domain": True,
+                #"domainColor": axisColor,
+                "gridColor": gridColor,
+                "domainWidth": 1,
+                "grid": False,
+                "labelFont": font,
+                "labelFontSize": 12,
+                "labelAngle": 60, 
+                "tickColor": axisColor,
+                "tickSize": 5, # default, including it just to show you can change it
+                "titleFont": font,
+                "titleFontSize": 16,
+                "titlePadding": 10, # guessing, not specified in styleguide
+                "title": "X Axis Title (units)", 
+            },
+            "axisY": {
+                "domain": False,
+                "grid": True,
+                "gridColor": gridColor,
+                "gridWidth": 1,
+                "labelFont": font,
+                "labelFontSize": 14,
+                "labelAngle": 0, 
+                #"ticks": False, # even if you don't have a "domain" you need to turn these off.
+                "titleFont": font,
+                "titleFontSize": 16,
+                "titlePadding": 10, # guessing, not specified in styleguide
+                "title": "Y Axis Title (units)", 
+                # titles are by default vertical left of axis so we need to hack this 
+                #"titleAngle": 0, # horizontal
+                #"titleY": -10, # move it up
+                #"titleX": 18, # move it to the right so it aligns with the labels 
+            },
+        }
+            }
+
+# register the custom theme under a chosen name
+alt.themes.register('vino_special', vino_special)
+
+# enable the newly registered theme
+alt.themes.enable('vino_special')
+
+
+
+
+
+
+
 def wrangle_counties(df):
     """
     Wrangle the data to group by county.
@@ -75,9 +142,11 @@ def plot_map(df, state_id=6):
         ).encode(
             color=alt.Color('Num Reviews:Q',
                             scale=colormap),
-            tooltip=['County:O', 'County ID:O',
-                     'Ave Points:Q', 'Ave Price:Q',
-                     'Ave Value:Q', 'Num Reviews:Q']
+            tooltip=[alt.Tooltip('County:O'), 
+                     alt.Tooltip('Ave Points:Q', format='.2f'),
+                     alt.Tooltip('Ave Price:Q', format='$.2f'),
+                     alt.Tooltip('Ave Value:Q', format='.2f'),
+                     alt.Tooltip('Num Reviews:Q')]
         )
         .transform_calculate(state_id="(datum.id / 1000)|0")
         .transform_filter((alt.datum.state_id) == state_id)
@@ -95,13 +164,17 @@ def plot_map(df, state_id=6):
             stroke='gray'
         ).transform_calculate(state_id="(datum.id / 1000)|0")
         .transform_filter((alt.datum.state_id) == state_id)
-        .properties(
-            title=f'Number of Observations by County for {state_name}',
-            width=700,
-            height=400
-        ).project('albersUsa'))
+    ).project(
+        'albersUsa'
+    )
 
-    return c_background + c_foreground
+
+    return (c_background + c_foreground).configure_view(
+                height=400,
+                width=240,
+                strokeWidth=4,
+                fill=None,
+                stroke=None)
 
 
 if __name__ == "__main__":

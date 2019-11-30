@@ -2,6 +2,68 @@ import altair as alt
 import pandas as pd
 from vega_datasets import data
 
+
+def vino_special():
+    font = "Helvetica"
+    axisColor = "#000000"
+    gridColor = "#DEDDDD"
+    return {
+        "config": {
+            "title": {
+                "fontSize": 24,
+                "font": font,
+                "anchor": "start", # equivalent of left-aligned.
+                "fontColor": "#000000"
+            },
+            'view': {
+                "height": 300, 
+                "width": 400
+            },
+            "axisX": {
+                "domain": True,
+                #"domainColor": axisColor,
+                "gridColor": gridColor,
+                "domainWidth": 1,
+                "grid": False,
+                "labelFont": font,
+                "labelFontSize": 12,
+                "labelAngle": 60, 
+                "tickColor": axisColor,
+                "tickSize": 5, # default, including it just to show you can change it
+                "titleFont": font,
+                "titleFontSize": 16,
+                "titlePadding": 10, # guessing, not specified in styleguide
+                "title": "X Axis Title (units)", 
+            },
+            "axisY": {
+                "domain": False,
+                "grid": True,
+                "gridColor": gridColor,
+                "gridWidth": 1,
+                "labelFont": font,
+                "labelFontSize": 14,
+                "labelAngle": 0, 
+                #"ticks": False, # even if you don't have a "domain" you need to turn these off.
+                "titleFont": font,
+                "titleFontSize": 16,
+                "titlePadding": 10, # guessing, not specified in styleguide
+                "title": "Y Axis Title (units)", 
+                # titles are by default vertical left of axis so we need to hack this 
+                #"titleAngle": 0, # horizontal
+                #"titleY": -10, # move it up
+                #"titleX": 18, # move it to the right so it aligns with the labels 
+            },
+        }
+            }
+
+# register the custom theme under a chosen name
+alt.themes.register('vino_special', vino_special)
+
+# enable the newly registered theme
+alt.themes.enable('vino_special')
+
+
+
 def wrangle_states(df):
     """
     Wrangle the data to group by state.
@@ -40,6 +102,7 @@ def plot_map(df):
     Returns altiar plot objects.
     """
 
+
     wine_states = wrangle_states(df)
     states = alt.topo_feature(data.us_10m.url, "states")
 
@@ -50,9 +113,11 @@ def plot_map(df):
     foreground = alt.Chart(states).mark_geoshape().encode(
         color=alt.Color('Num Reviews:Q',
                         scale=colormap),
-        tooltip=['State:O', 'State ID:O', 
-                 'Ave Points:Q','Ave Price:Q',
-                 'Ave Value:Q','Num Reviews:Q']
+        tooltip=[alt.Tooltip('State:O'),
+                 alt.Tooltip('Ave Points:Q', format='.2f'),
+                 alt.Tooltip('Ave Price:Q', format='$.2f'),
+                 alt.Tooltip('Ave Value:Q', format='.2f'),
+                 alt.Tooltip('Num Reviews:Q')]
     ).mark_geoshape(
         stroke='black',
         strokeWidth=0.5
@@ -63,9 +128,6 @@ def plot_map(df):
                              ['State', 'State ID', 'Ave Points', 'Ave Price', 'Ave Value', 'Num Reviews'])
     ).project(
         type='albersUsa'
-    ).properties(
-        width=700,
-        height=400
     )
 
     background = alt.Chart(states).mark_geoshape(
@@ -73,13 +135,14 @@ def plot_map(df):
         stroke='dimgray'
     ).project(
         'albersUsa'
-    ).properties(
-        title='Number of Observations by State',
-        width=700,
-        height=400
     )
-
-    return(background + foreground)
+    
+    return (background + foreground).configure_view(
+                height=400,
+                width=570,
+                strokeWidth=4,
+                fill=None,
+                stroke=None)
 
 
 if __name__ == "__main__":

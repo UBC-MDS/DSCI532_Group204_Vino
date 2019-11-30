@@ -49,7 +49,10 @@ def plot_heatmap(df, x_name='price'):
             legend=alt.Legend(
                             orient='right', title="Average Value")
                         ),
-            tooltip=['average(points)','average(price)','average(value_scaled)', 'count(title)']
+            tooltip=[alt.Tooltip('average(points):Q', format='.2f'),
+                     alt.Tooltip('average(price)', format='$.2f'),
+                     alt.Tooltip('average(value_scaled)', format='.2f'),
+                     alt.Tooltip('count(title)')]
         ).properties(
             title="Average Value for Grape Varieties by Price"
         ).configure_axis(
@@ -68,9 +71,12 @@ def plot_heatmap(df, x_name='price'):
             legend=alt.Legend(
                             orient='right', title="Average Value")
                         ),
-            tooltip=['average(points)','average(price)','average(value_scaled)', 'count(title)']
+            tooltip=[alt.Tooltip('average(points):Q', format='.2f'),
+                     alt.Tooltip('average(price)', format='$.2f'),
+                     alt.Tooltip('average(value_scaled)', format='.2f'),
+                     alt.Tooltip('count(title)')]
         ).properties(
-            title="Average Value for Grape Varieties by Price"
+            title="Average Value for Grape Varieties by Rating"
         ).configure_axis(
             grid=False
         )
