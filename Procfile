@@ -1,1 +1,1 @@
-web: gunicorn app_vino:server
+web: gunicorn --pythonpath src app_vino:server
