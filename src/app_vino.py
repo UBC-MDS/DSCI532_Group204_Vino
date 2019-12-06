@@ -62,13 +62,16 @@ jumbotron = dbc.Jumbotron(
 content = dbc.Container(
     [
         html.P(
-            "This app allows you visualize details of over 50,000 wine reviews from across \
+            "This app allows you to visualize details of over 50,000 wine reviews from across \
             the United States, using data scraped from Wine Enthusiast on November 22nd, \
             2017. Given the data source, the wines tend to be of relatively high quality, \
-            with each receiving a rating score between 80 and 100. \
-            We’ve used these ratings to assign a ‘value’ score to each wine, which \
-            is essentially a ratio of its rating to price. Each review also contains details \
-            such as grape variety, winery, region, county, and state."
+            with each receiving a rating score between 80 and 100."
+        ),
+        html.P(
+            "We’ve used these ratings to assign a custom ‘value’ score to each wine, which \
+            is a ratio of its rating to price scaled to be out of 100. Buying a high value wine \
+            would mean you're getting a high rating score per dollar spent. Each review also contains \
+            details such as grape variety, winery, region, county, and state."
         ),
         html.Br(),
         dcc.Tabs(
@@ -144,10 +147,14 @@ content = dbc.Container(
                         dbc.Row(dbc.Col(html.Br())),
                         dbc.Row(
                             dbc.Col(html.P('These interactive graphs allow you to explore the price, \
-                                rating and value for different wineries, grape varieties, and regions. \
-                                The bar chart shows dynamically ranked results for calculated averages, \
-                                while the heat map shows the distribution of value (scaled rating / dollar) \
-                                for popular grape varieties.'))
+                                rating and our calculated value score for different wineries, grape varieties, \
+                                and regions.'))
+                            ),
+                        dbc.Row(
+                            dbc.Col(html.P('The first chart shows ranked average values \
+                                calculated from your dropdown selections, \
+                                while the heat map at the bottom shows how the value scores for popular grape \
+                                varieties are distributed across different price points or ratings.'))
                             ),
                         dbc.Row(dbc.Col(html.Br())),
                         dbc.Row(dbc.Col(html.H3('Wine Rankings'))),
@@ -225,7 +232,7 @@ content = dbc.Container(
                             ])
                             ]),
                         dbc.Row(dbc.Col(html.Br())),
-                        dbc.Row(dbc.Col(html.H3('Price and Rating Analysis'))),
+                        dbc.Row(dbc.Col(html.H3('Which Grape Varieties Are The Best Value?'))),
                         dbc.Row(
                             dbc.Col(html.Hr(hidden=False,
                                             style={'height':1,
@@ -254,7 +261,7 @@ content = dbc.Container(
                                     sandbox='allow-scripts',
                                     id='heatmap_1',
                                     height=600,
-                                    width=850,
+                                    width=900,
                                     style={'border-width': '0'},
                                     srcDoc=plot_heatmap(DATA).to_html()
                                 )
