@@ -1,74 +1,13 @@
 import altair as alt
 import pandas as pd
 from vega_datasets import data
-import sys
-
-
-
-def vino_special():
-    font = "Helvetica"
-    axisColor = "#000000"
-    gridColor = "#DEDDDD"
-    return {
-        "config": {
-            "title": {
-                "fontSize": 24,
-                "font": font,
-                "anchor": "start", # equivalent of left-aligned.
-                "fontColor": "#000000"
-            },
-            'view': {
-                "height": 300, 
-                "width": 400
-            },
-            "axisX": {
-                "domain": True,
-                #"domainColor": axisColor,
-                "gridColor": gridColor,
-                "domainWidth": 1,
-                "grid": False,
-                "labelFont": font,
-                "labelFontSize": 12,
-                "labelAngle": 60, 
-                "tickColor": axisColor,
-                "tickSize": 5, # default, including it just to show you can change it
-                "titleFont": font,
-                "titleFontSize": 16,
-                "titlePadding": 10, # guessing, not specified in styleguide
-                "title": "X Axis Title (units)", 
-            },
-            "axisY": {
-                "domain": False,
-                "grid": True,
-                "gridColor": gridColor,
-                "gridWidth": 1,
-                "labelFont": font,
-                "labelFontSize": 14,
-                "labelAngle": 0, 
-                #"ticks": False, # even if you don't have a "domain" you need to turn these off.
-                "titleFont": font,
-                "titleFontSize": 16,
-                "titlePadding": 10, # guessing, not specified in styleguide
-                "title": "Y Axis Title (units)", 
-                # titles are by default vertical left of axis so we need to hack this 
-                #"titleAngle": 0, # horizontal
-                #"titleY": -10, # move it up
-                #"titleX": 18, # move it to the right so it aligns with the labels 
-            },
-        }
-            }
+from vino_themes import vino_special
 
 # register the custom theme under a chosen name
 alt.themes.register('vino_special', vino_special)
 
 # enable the newly registered theme
 alt.themes.enable('vino_special')
-
-
-
-
-
-
 
 def wrangle_counties(df):
     """
@@ -91,7 +30,7 @@ def wrangle_counties(df):
     wine_counties = wine_counties.rename(columns={"county": 'County',
                                                   "county_id": 'County ID',
                                                   "description": "Num Reviews",
-                                                  "points": 'Ave Points',
+                                                  "points": 'Ave Rating',
                                                   "price": 'Ave Price',
                                                   "value_scaled": 'Ave Value'})
 
@@ -127,7 +66,6 @@ def plot_map(df, state_id=6):
     counties = alt.topo_feature(data.us_10m.url, 'counties')
 
     state = lookup_state_id(df, state_id)
-    state_name = state['state']
     state_id = state['state_id']
 
     colormap = alt.Scale(domain=[0, 100, 500, 1000, 2000, 4000, 8000],
@@ -143,7 +81,7 @@ def plot_map(df, state_id=6):
             color=alt.Color('Num Reviews:Q',
                             scale=colormap),
             tooltip=[alt.Tooltip('County:O'), 
-                     alt.Tooltip('Ave Points:Q', format='.2f'),
+                     alt.Tooltip('Ave Rating:Q', format='.2f'),
                      alt.Tooltip('Ave Price:Q', format='$.2f'),
                      alt.Tooltip('Ave Value:Q', format='.2f'),
                      alt.Tooltip('Num Reviews:Q')]
@@ -154,7 +92,7 @@ def plot_map(df, state_id=6):
             lookup='id',
             from_=alt.LookupData(wine_counties,
                                  'County ID',
-                                 ['County', 'County ID', 'Ave Points',
+                                 ['County', 'County ID', 'Ave Rating',
                                   'Ave Price', 'Ave Value', 'Num Reviews']))
     )
 
@@ -167,7 +105,6 @@ def plot_map(df, state_id=6):
     ).project(
         'albersUsa'
     )
-
 
     return (c_background + c_foreground).configure_view(
                 height=400,

@@ -1,68 +1,13 @@
 import altair as alt
 import pandas as pd
 from vega_datasets import data
-
-
-def vino_special():
-    font = "Helvetica"
-    axisColor = "#000000"
-    gridColor = "#DEDDDD"
-    return {
-        "config": {
-            "title": {
-                "fontSize": 24,
-                "font": font,
-                "anchor": "start", # equivalent of left-aligned.
-                "fontColor": "#000000"
-            },
-            'view': {
-                "height": 300, 
-                "width": 400
-            },
-            "axisX": {
-                "domain": True,
-                #"domainColor": axisColor,
-                "gridColor": gridColor,
-                "domainWidth": 1,
-                "grid": False,
-                "labelFont": font,
-                "labelFontSize": 12,
-                "labelAngle": 60, 
-                "tickColor": axisColor,
-                "tickSize": 5, # default, including it just to show you can change it
-                "titleFont": font,
-                "titleFontSize": 16,
-                "titlePadding": 10, # guessing, not specified in styleguide
-                "title": "X Axis Title (units)", 
-            },
-            "axisY": {
-                "domain": False,
-                "grid": True,
-                "gridColor": gridColor,
-                "gridWidth": 1,
-                "labelFont": font,
-                "labelFontSize": 14,
-                "labelAngle": 0, 
-                #"ticks": False, # even if you don't have a "domain" you need to turn these off.
-                "titleFont": font,
-                "titleFontSize": 16,
-                "titlePadding": 10, # guessing, not specified in styleguide
-                "title": "Y Axis Title (units)", 
-                # titles are by default vertical left of axis so we need to hack this 
-                #"titleAngle": 0, # horizontal
-                #"titleY": -10, # move it up
-                #"titleX": 18, # move it to the right so it aligns with the labels 
-            },
-        }
-            }
+from vino_themes import vino_special
 
 # register the custom theme under a chosen name
 alt.themes.register('vino_special', vino_special)
 
 # enable the newly registered theme
 alt.themes.enable('vino_special')
-
-
 
 def wrangle_states(df):
     """
@@ -74,6 +19,7 @@ def wrangle_states(df):
 
     Returns the data grouped by state in a pandas df.
     """
+
     # Group and aggregate the data by States
     states_grouped = df.groupby(['state', 'state_id'], as_index=False)
     wine_states = states_grouped.agg({'points': ['mean'],
@@ -85,7 +31,7 @@ def wrangle_states(df):
     wine_states = wine_states.rename(columns={"state": "State",
                                               "state_id": "State ID",
                                               "description": "Num Reviews",
-                                              "points": 'Ave Points',
+                                              "points": 'Ave Rating',
                                               "price": 'Ave Price',
                                               "value_scaled": 'Ave Value'})
     return wine_states
@@ -102,7 +48,6 @@ def plot_map(df):
     Returns altiar plot objects.
     """
 
-
     wine_states = wrangle_states(df)
     states = alt.topo_feature(data.us_10m.url, "states")
 
@@ -114,7 +59,7 @@ def plot_map(df):
         color=alt.Color('Num Reviews:Q',
                         scale=colormap),
         tooltip=[alt.Tooltip('State:O'),
-                 alt.Tooltip('Ave Points:Q', format='.2f'),
+                 alt.Tooltip('Ave Rating:Q', format='.2f'),
                  alt.Tooltip('Ave Price:Q', format='$.2f'),
                  alt.Tooltip('Ave Value:Q', format='.2f'),
                  alt.Tooltip('Num Reviews:Q')]
@@ -125,7 +70,7 @@ def plot_map(df):
         lookup='id',
         from_=alt.LookupData(wine_states,
                              'State ID',
-                             ['State', 'State ID', 'Ave Points', 'Ave Price', 'Ave Value', 'Num Reviews'])
+                             ['State', 'State ID', 'Ave Rating', 'Ave Price', 'Ave Value', 'Num Reviews'])
     ).project(
         type='albersUsa'
     )
