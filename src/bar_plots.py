@@ -6,7 +6,7 @@ x_labels = {'region_1': 'Region',
             'variety': 'Grape Variety'}
 
 y_labels = {'points': 'Rating',
-            'price': 'Price',
+            'price': 'Price ($)',
             'value_scaled': 'Value'}
 
 def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, direction='desc'):
@@ -46,7 +46,7 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                     "grid": False,
                     "labelFont": font,
                     "labelFontSize": 12,
-                    "labelAngle": 60, 
+                    #"labelAngle": 60, 
                     "tickColor": axisColor,
                     "tickSize": 5, # default, including it just to show you can change it
                     "titleFont": font,
@@ -88,24 +88,24 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
     if direction == 'desc': 
         new_data = new_data.sort_values(by=y_name, ascending=False).head(n).reset_index()
         ranked_bar = alt.Chart(new_data).mark_bar().encode(
-            alt.X(x_name +':N',
-                      sort=alt.EncodingSortField(
-                      field=y_name,  
-                      op="sum",  
-                      order='descending',  
+                alt.X(x_name +':N',
+                    sort=alt.EncodingSortField(
+                    field=y_name,  
+                    op="sum",  
+                    order='descending',  
                   )),
-            alt.Y(y_name + ':Q', title=y_labels[y_name],
-                  scale=alt.Scale(domain=[min(new_data[y_name]),
-                     max(new_data[y_name])])
+                alt.Y(y_name + ':Q', title=y_labels[y_name],
+                    scale=alt.Scale(domain=[min(new_data[y_name]),
+                       max(new_data[y_name])])
                  ),
-            color=alt.condition(
-                alt.datum[x_name] == new_data[x_name][0],
-                alt.value('#512888'),
-                alt.value('lightgrey')
-            ),
-            tooltip=[alt.Tooltip(f'{x_name}:N'),
-                    alt.Tooltip(f'{y_name}:Q')]
-        ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
+                color=alt.condition(
+                    alt.datum[x_name] == new_data[x_name][0],
+                    alt.value('#512888'),
+                    alt.value('lightgrey')
+                )
+            ).configure_axisX(
+                labelAngle=60
+            ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
         return ranked_bar
     else:
         # If we want to sort from lowest to highest
@@ -127,5 +127,7 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                 alt.value('lightgrey')
             ),
             tooltip=[x_name + ':N', y_name + ':Q']
-        ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
+        ).configure_axisX(
+                labelAngle=60
+            ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
         return ranked_bar
