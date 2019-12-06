@@ -21,7 +21,7 @@ server = app.server
 
 app.title = "V is for Vino"
 
-data = pd.read_csv('../data/cleaned_data.csv', index_col=0)
+data = pd.read_csv('data/cleaned_data.csv', index_col=0)
 
 # Get the states dictionary
 STATES = data[['state', 'state_id']].drop_duplicates(keep='first')
