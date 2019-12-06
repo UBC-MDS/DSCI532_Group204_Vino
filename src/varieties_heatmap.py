@@ -1,7 +1,7 @@
 import altair as alt
 import pandas as pd
 from vega_datasets import data
-from vino_themes import vino_special_heatmap
+from vino_themes import vino_special
 
 def wrangle_varieties(df):
     """
@@ -37,10 +37,10 @@ def plot_heatmap(df, x_name='price'):
     """
 
     # register the custom theme under a chosen name
-    alt.themes.register('vino_special_heatmap', vino_special_heatmap)
+    alt.themes.register('vino_special', vino_special)
 
     # enable the newly registered theme
-    alt.themes.enable('vino_special_heatmap')
+    alt.themes.enable('vino_special')
 
     varieties_chart_data = wrangle_varieties(df)
 
