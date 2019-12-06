@@ -123,8 +123,8 @@ def plot_map(df):
         strokeWidth=0.5
     ).transform_lookup(
         lookup='id',
-        from_=alt.LookupData(wine_states, 
-                             'State ID', 
+        from_=alt.LookupData(wine_states,
+                             'State ID',
                              ['State', 'State ID', 'Ave Points', 'Ave Price', 'Ave Value', 'Num Reviews'])
     ).project(
         type='albersUsa'
@@ -148,3 +148,4 @@ def plot_map(df):
 if __name__ == "__main__":
     df = pd.read_csv('../data/cleaned_data.csv', index_col=0)
     plot_map(df)
+	
