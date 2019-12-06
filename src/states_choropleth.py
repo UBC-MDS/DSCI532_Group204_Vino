@@ -1,7 +1,7 @@
 import altair as alt
 import pandas as pd
 from vega_datasets import data
-from vino_special import vino_special
+from vino_themes import vino_special
 
 # register the custom theme under a chosen name
 alt.themes.register('vino_special', vino_special)
@@ -19,6 +19,7 @@ def wrangle_states(df):
 
     Returns the data grouped by state in a pandas df.
     """
+
     # Group and aggregate the data by States
     states_grouped = df.groupby(['state', 'state_id'], as_index=False)
     wine_states = states_grouped.agg({'points': ['mean'],
@@ -47,7 +48,6 @@ def plot_map(df):
     Returns altiar plot objects.
     """
 
-
     wine_states = wrangle_states(df)
     states = alt.topo_feature(data.us_10m.url, "states")
 
@@ -70,7 +70,7 @@ def plot_map(df):
         lookup='id',
         from_=alt.LookupData(wine_states,
                              'State ID',
-                             ['State', 'State ID', 'Ave Points', 'Ave Price', 'Ave Value', 'Num Reviews'])
+                             ['State', 'State ID', 'Ave Rating', 'Ave Price', 'Ave Value', 'Num Reviews'])
     ).project(
         type='albersUsa'
     )

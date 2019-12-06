@@ -56,3 +56,51 @@ def vino_special():
             },
         }
     }
+
+
+def vino_special_heatmap():
+    font = "Helvetica"
+    axisColor = "#000000"
+    gridColor = "#DEDDDD"
+    return {
+        "config": {
+            "title": {
+                "fontSize": 24,
+                "font": font,
+                "anchor": "start", # equivalent of left-aligned.
+                "fontColor": "#000000"
+            },
+            'view': {
+                "height": 300, 
+                "width": 500
+            },
+            "axisX": {
+                "domain": True,
+                "gridColor": gridColor,
+                "domainWidth": 1,
+                "grid": False,
+                "labelFont": font,
+                "labelFontSize": 12,
+                "labelAngle": 0,  #no angle required for this plot
+                "tickColor": axisColor,
+                "tickSize": 5, 
+                "titleFont": font,
+                "titleFontSize": 16,
+                "titlePadding": 10,
+                "title": "X Axis Title (units)", 
+            },
+            "axisY": {
+                "domain": False,
+                "grid": True,
+                "gridColor": gridColor,
+                "gridWidth": 1,
+                "labelFont": font,
+                "labelFontSize": 14,
+                "labelAngle": 0, 
+                "titleFont": font,
+                "titleFontSize": 16,
+                "titlePadding": 10,
+                "title": "Y Axis Title (units)",
+            },
+        }
+    }
