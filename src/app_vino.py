@@ -159,6 +159,18 @@ content = dbc.Container(
                         dbc.Row(dbc.Col(html.Br())),
                         dbc.Row(dbc.Col(html.H3('Wine Rankings'))),
                         dbc.Row(
+                            dbc.Col(html.Ul([
+                                html.Li(['Explore wines from different regions, wineries, or varieties \
+                                using the "Choose X Axis" dropdown menu']), 
+                                html.Li(['Change the number of regions, wineries, or varieties you are exploring \
+                                using the slider bar']),
+                                html.Li(['Find the highest or lowest ranked wines based on rating, price, \
+                                or value using the "Choose Y Axis" dropdown menu and the "Choose the \
+                                Ranking" toggle button.'])
+                            ])
+                            )
+                        ),
+                        dbc.Row(
                             dbc.Col(html.Hr(hidden=False,
                                             style={'height':1,
                                                    'background-color': '#50107a',
@@ -201,7 +213,7 @@ content = dbc.Container(
                                         {'label': ' Lowest to Highest  ', 'value': 'asc'},
                                         {'label': ' Highest to Lowest', 'value': 'desc'}
                                     ],
-                                    value='asc',
+                                    value='desc',
                                     labelStyle={'display': 'block'}
                                     )),
                             ]),
