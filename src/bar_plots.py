@@ -1,11 +1,12 @@
 import altair as alt
 import pandas as pd
+from vino_themes import vino_special
 
-x_labels = {'region_1': 'Region',
+X_LABELS = {'region_1': 'Region',
             'winery': 'Winery',
             'variety': 'Grape Variety'}
 
-y_labels = {'points': 'Rating',
+Y_LABELS = {'points': 'Rating',
             'price': 'Price ($)',
             'value_scaled': 'Value'}
 
@@ -94,7 +95,7 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                     op="sum",  
                     order='descending',  
                   )),
-                alt.Y(y_name + ':Q', title=y_labels[y_name],
+                alt.Y(y_name + ':Q', title=Y_LABELS[y_name],
                     scale=alt.Scale(domain=[min(new_data[y_name]),
                        max(new_data[y_name])])
                  ),
@@ -105,7 +106,7 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                 )
             ).configure_axisX(
                 labelAngle=60
-            ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
+            ).properties(width=500, height=300, title='Average ' + Y_LABELS[y_name] + ' by ' + X_LABELS[x_name]) 
         return ranked_bar
     else:
         # If we want to sort from lowest to highest
@@ -117,7 +118,7 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
                       op="sum",  
                       order='ascending'  
                   )),
-            alt.Y(y_name + ':Q', title=y_labels[y_name], 
+            alt.Y(y_name + ':Q', title=Y_LABELS[y_name], 
                   scale=alt.Scale(domain=[min(new_data[y_name])-1,
                              max(new_data[y_name])])
                  ),
@@ -129,5 +130,5 @@ def sort_extract_bar_plot(data, y_name='points', x_name='winery', n=15, directio
             tooltip=[x_name + ':N', y_name + ':Q']
         ).configure_axisX(
                 labelAngle=60
-            ).properties(width=500, height=300, title='Average ' + y_labels[y_name] + ' by ' + x_labels[x_name]) 
+            ).properties(width=500, height=300, title='Average ' + Y_LABELS[y_name] + ' by ' + X_LABELS[x_name]) 
         return ranked_bar

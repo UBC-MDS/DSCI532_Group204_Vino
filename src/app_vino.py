@@ -12,17 +12,18 @@ from bar_plots import sort_extract_bar_plot
 
 alt.data_transformers.disable_max_rows()
 
-app = dash.Dash(__name__,
+APP = dash.Dash(__name__,
                 assets_folder='assets',
                 external_stylesheets=[dbc.themes.LUX,
                                       'jumbotron.css'])
 
-server = app.server
+# Set the app title
+APP.title = "V is for Vino"
 
-app.title = "V is for Vino"
-
+# Read in the DATA
 DATA = pd.read_csv('../data/cleaned_data.csv', index_col=0)
 
+# Set NUMBER_OBS for bar plots
 NUMBER_OBS = {1: {'label': '1'}}
 NUMBER_OBS.update({n: {'label': str(n)} for n in range(5, 51, 5)})
 
@@ -30,6 +31,21 @@ NUMBER_OBS.update({n: {'label': str(n)} for n in range(5, 51, 5)})
 STATES = DATA[['state', 'state_id']].drop_duplicates(keep='first')
 STATES.rename(columns={"state": "label", "state_id": "value"}, inplace=True)
 STATES = STATES.to_dict('records')
+
+# Set JUMBOTRON element
+JUMBOTRON = dbc.Jumbotron(
+    [
+        dbc.Col(
+            [
+                html.H1("V is for Vino", className="display-3"),
+                html.P(
+                    "Explore the best wines the United States \
+                        has to offer using our interactive dashboard",
+                    className="lead"),
+            ],
+            style={"text-align": 'center'})],
+    fluid=True,
+)
 
 def plot_choropleth(_type, state_id=6):
     """
@@ -45,21 +61,8 @@ def plot_choropleth(_type, state_id=6):
     elif _type == 'state':
         return state_choropleth.plot_map(DATA, state_id)
 
-jumbotron = dbc.Jumbotron(
-    [
-        dbc.Col(
-            [
-                html.H1("V is for Vino", className="display-3"),
-                html.P(
-                    "Explore the best wines the United States \
-                        has to offer using our interactive dashboard",
-                    className="lead"),
-            ],
-            style={"text-align": 'center'})],
-    fluid=True,
-)
-
-content = dbc.Container(
+# Declate CONTENT element for dash
+CONTENT = dbc.Container(
     [
         html.P(
             "This app allows you to visualize details of over 50,000 wine reviews from across \
@@ -100,7 +103,7 @@ content = dbc.Container(
                                   find the best wine's at the best prices in America."))
                             ),
                         dbc.Row(dbc.Col(html.Br())),
-                        dbc.Row(dbc.Col(html.H3('Total Number of Reviews'))),
+                        dbc.Row(dbc.Col(html.H3('Total number of wine reviews by state'))),
                         dbc.Row(
                             dbc.Col(html.Hr(hidden=False,
                                             style={'height':1,
@@ -283,11 +286,11 @@ content = dbc.Container(
         ])
     ])
 
-app.layout = html.Div([jumbotron, 
-                       content,
+APP.layout = html.Div([JUMBOTRON, 
+                       CONTENT,
                        html.Div(id='tabs-content-classes')])
 
-@app.callback(
+@APP.callback(
     dash.dependencies.Output('plot', 'srcDoc'),
     [dash.dependencies.Input('bar-chart-x', 'value'),
     dash.dependencies.Input('bar-chart-y', 'value'),
@@ -305,7 +308,7 @@ def update_plot(x_name_update, y_name_update, order, obs):
                                              direction=order).to_html()
     return updated_bar_plot
 
-@app.callback(
+@APP.callback(
     dash.dependencies.Output('state_choropleth', 'srcDoc'),
     [dash.dependencies.Input('state_id', 'value')])
 def update_state_call(state_id):
@@ -316,7 +319,7 @@ def update_state_call(state_id):
     update_state = plot_choropleth('state', state_id).to_html()
     return update_state
 
-@app.callback(
+@APP.callback(
     dash.dependencies.Output('heatmap_1', 'srcDoc'),
     [dash.dependencies.Input('heatmap_x', 'value')])
 def update_heatmap_call(heatmap_x_update):
@@ -328,4 +331,4 @@ def update_heatmap_call(heatmap_x_update):
     return update_heatmap
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    APP.run_server(debug=True)
