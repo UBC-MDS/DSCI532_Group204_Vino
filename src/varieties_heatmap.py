@@ -1,6 +1,7 @@
 import altair as alt
 import pandas as pd
 from vega_datasets import data
+from vino_special import vino_special
 
 def wrangle_varieties(df):
     """
