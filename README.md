@@ -21,6 +21,10 @@ The main proposal file for this project milestone can be found [here.](https://g
 
 The app is created to allow users to explore the wine industry within the United States. It includes functionality to analyse geographic features with choropleth maps of the U.S., and functionality to analyse details about price, ratings, or value for a particular winery, region, or grape variety. The app is designed with an easy to use UI separating the views into one of two tabs to easily frame their research and avoid overcluttering their browser window. A focus on user interaction and aesthetically pleasing design elements puctuated by a consistent color scheme underpin the usefulness and usability of this app. The app includes many useful hover and tooltip elements as well as interactive dropdowns, buttons and views which will allow the user complete control of what they see allowing for self discovery of different wine charachteristics. Future versions aim to include search features allowing users to gain insights on specific bottles of wine. The two views are summarized in the sketches below:
 
+#### Geographic View
+
 ![Sketch](imgs/updated_sketch_p1.png)
+
+#### Wine Feature View
 
 ![Sketch](imgs/updated_sketch_p2.png)
